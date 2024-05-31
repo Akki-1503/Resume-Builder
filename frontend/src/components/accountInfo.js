@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { startGetUserAccount, logoutUser } from '../actions/userAction'
-import { Container, Card, Button, Spinner } from 'react-bootstrap'
+import { startGetUserAccount } from '../actions/userAction'
+import { Container, Card, Spinner } from 'react-bootstrap'
 
 const Account = () => {
   const dispatch = useDispatch()
@@ -19,6 +19,7 @@ const Account = () => {
           <Card.Body>
             <Card.Title>Username: {user.username}</Card.Title>
             <Card.Text>Email: {user.email}</Card.Text>
+            <Card.Text>Contact: {user.contact}</Card.Text>
           </Card.Body>
         </Card>
       ) : (

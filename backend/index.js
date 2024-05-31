@@ -20,6 +20,12 @@ app.get('/api/users/account',authenticateUser ,usersCtlr.account)
 app.get('/api/users/:role', authenticateUser, usersCtlr.role)
 app.post('/api/users/reset-password', usersCtlr.resetPassword)
 
+app.put('/api/users/:userId', authenticateUser,
+    (req, res, next) => {
+        req.permittedRoles = ['user']   
+        next()
+    }, authorizeUser, usersCtlr.update)
+
 app.listen(PORT, () => {
     console.log('server running on port', PORT)
 })

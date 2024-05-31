@@ -7,7 +7,7 @@ const usersCtlr = {}
 
 usersCtlr.register = async (req, res) => {
   try {
-    const body = pick(req.body, ['username', 'email', 'password'])
+    const body = pick(req.body, ['username', 'email', 'password', 'contact'])
     console.log(req.body, 'body')
 
     const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*_-]).{8,}$/
@@ -61,14 +61,17 @@ usersCtlr.login = async(req, res) => {
             res.status(404).json({error: 'invalid username or password'})
         }
     } else{
-        res.status(404).json({error: 'This email is not registered with us. Please try to register and login.'});
+        res.status(404).json({error: 'This email is not registered with us. Please try to register and login.'})
     }
 }
 
 usersCtlr.account = async(req, res) => {
     try{
         const user = await User.findById(req.user._id)
-        res.json(pick (user, ['_id', 'username', 'email']))
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' })
+        }
+        res.json(pick (user, ['_id', 'username', 'email', 'contact']))
     } catch(e) {
         res.json(e)
     }
@@ -109,6 +112,33 @@ usersCtlr.resetPassword = async(req, res) => {
     } catch(err) {
         console.log(err)
         res.status(500).json({ error: 'ServerError', message: 'An error occurred while processing your request.' })
+    }
+}
+
+usersCtlr.update = async (req, res) => {
+    try {
+        const userId = req.params.userId
+        console.log('id', userId)
+        const body = req.body
+        console.log('body', body)
+
+        // Update query to only use _id
+        const user = await User.findOneAndUpdate(
+            { _id: userId },
+            body,
+            { new: true, runValidators: true }
+        )
+
+        console.log('user', user)
+
+        if (user) {
+            res.json(user)
+        } else {
+            res.status(404).json({ error: 'User not found or not authorized to update' })
+        }
+    } catch (err) {
+        console.error('Error updating user:', err)
+        res.status(500).json({ error: 'An error occurred while updating the profile.' })
     }
 }
 

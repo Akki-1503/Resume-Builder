@@ -14,6 +14,7 @@ function RegistrationForm() {
     email: '',
     password: '',
     role: '',
+    contact: '', // Add contactDetails here
   })
 
   const [validationError, setValidationError] = useState('')
@@ -33,11 +34,12 @@ function RegistrationForm() {
   }
 
   const validateForm = () => {
-    const { username, email, password, role } = formData
+    const { username, email, password, contact } = formData
     let valid = true
     let error = ''
 
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !contact) { // Add contactDetails validation
+      error = 'All fields are required.'
       valid = false
     } else if (password.length < 8) {
       error = 'Password must be at least 8 characters long.'
@@ -91,6 +93,18 @@ function RegistrationForm() {
             name="password"
             placeholder="Password"
             value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group controlId="formContact"> {/* Add this section */}
+          <Form.Label>Contact Details</Form.Label>
+          <Form.Control
+            type="number"
+            name="contact"
+            placeholder="Contact Details"
+            value={formData.contact}
             onChange={handleChange}
             required
           />

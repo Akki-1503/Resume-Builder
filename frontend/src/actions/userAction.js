@@ -40,7 +40,6 @@ export const startLoginUser = (userData, navigate) => {
     } catch (error) {
       console.error(error)
       if (error.response) {
-        // Server responded with a status code outside 2xx range
         if (error.response.status === 403) {
           dispatch({ type: 'LOGIN_ERROR', payload: error.response.data.message })
         } else if (error.response.status === 404) {
@@ -49,10 +48,8 @@ export const startLoginUser = (userData, navigate) => {
           dispatch({ type: 'LOGIN_ERROR', payload: 'An unexpected error occurred. Please try again later.' })
         }
       } else if (error.request) {
-        // Request was made but no response received
         dispatch({ type: 'LOGIN_ERROR', payload: 'Network Error. Please check your connection and try again.' })
       } else {
-        // Something happened in setting up the request
         dispatch({ type: 'LOGIN_ERROR', payload: 'An unexpected error occurred. Please try again later.' })
       }
     }
@@ -82,6 +79,32 @@ export const startGetUserAccount = () => {
 
 const userAccount = (userData) => {
   return { type: 'USER_ACCOUNT', payload: userData }
+}
+
+export const startUpdateProfile = (updateData, userId, navigate) => {
+  return async (dispatch) => {
+    try{
+      console.log('userid', userId)
+      const response = await axios.put(`http://localhost:3321/api/users/${userId}`, updateData,
+      {
+        headers: {
+          'Authorization': localStorage.getItem('token'),
+        },
+      }
+      )
+      const profileData = response.data
+        console.log('profile', profileData)
+        dispatch(updateProfile(profileData))
+        window.alert('Profile updated successfully')
+        navigate('/account')
+    } catch(err) {
+      console.error(err)
+    }
+  }
+}
+
+const updateProfile = (data) => {
+  return { type: 'UPDATE_PROFILE', payload: data }
 }
 
 export const logoutUser = () => {

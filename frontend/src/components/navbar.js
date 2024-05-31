@@ -6,7 +6,11 @@ import { Navbar, Nav, Container } from 'react-bootstrap'
 const NavBar = ({ userLoggedIn, handleAuth, role }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user)
+  const user = useSelector((state) => state.user.user)
+  console.log(user, 'user navbar')
+
+  const userId = user ? user._id : null
+  console.log(userId, 'userId navbar')
 
   return (
     <Navbar bg="light" expand="lg">
@@ -30,6 +34,7 @@ const NavBar = ({ userLoggedIn, handleAuth, role }) => {
                 >
                   Logout
                 </Nav.Link>
+                <Nav.Link as={Link} to={`/update-profile/${userId}`}>Update Profile</Nav.Link>
               </>
             ) : (
               <>

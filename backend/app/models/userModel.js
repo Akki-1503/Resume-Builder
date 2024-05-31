@@ -34,7 +34,12 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
-    }
+    },
+    contact: {
+        type: Number,
+        required: true
+    },
+
 })
 
 const User = mongoose.model('User', userSchema)

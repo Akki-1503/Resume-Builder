@@ -36,6 +36,14 @@ const userReducer = (state = initialState, action) => {
         role: action.payload.role,
         error: '',
       }
+    case 'UPDATE_PROFILE' :
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        role: action.payload.role,
+        error: '',
+      }
     case 'LOGIN_ERROR':
       return {
         ...state,

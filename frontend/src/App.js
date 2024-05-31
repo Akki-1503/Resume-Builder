@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
 import NavBar from './components/navbar'
@@ -9,6 +9,7 @@ import LoginForm from "./components/loginForm"
 import AccountInfo from "./components/accountInfo"
 import Home from "./components/home"
 import ForgotPassword from './components/forgotPassword'
+import UpdateProfile from './components/updateProfile'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const App = () => {
@@ -19,6 +20,12 @@ const App = () => {
   const handleAuth = () => {
     setUserLoggedIn(!userLoggedIn)
   }
+
+  const user = useSelector((state) => state.user.user)
+  console.log(user, 'user')
+
+  const userId = user?._id
+  console.log(userId, 'userId')
 
   useEffect(() => {
     if (userLoggedIn) {
@@ -46,6 +53,7 @@ const App = () => {
           <Route path="/login" element={<LoginForm handleAuth={handleAuth} />} />
           <Route path="/account" element={<AccountInfo />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/update-profile/:userId" element={<UpdateProfile />} />
         </Routes>
       </div>
     </div>
